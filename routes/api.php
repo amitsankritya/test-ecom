@@ -34,5 +34,8 @@ Route::group([
         Route::post('refresh', [ApiAuthController::class, 'refresh']);
     });
 
-    Route::get("search/nuts", [StockController::class, 'fetch']);
+    Route::get("search", [StockController::class, 'fetch']);
+
+    Route::post("add", [StockController::class, 'add']);
+    Route::put("edit/{id}", [StockController::class, 'edit']);
 });

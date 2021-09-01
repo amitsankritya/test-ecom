@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddEditStockRequest;
+use App\Models\Stock;
+use App\Models\StockCity;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\StockFiltersRequest;
@@ -23,11 +26,11 @@ class StockController extends Controller
             ], 422);
         }
 
-        //
+        try {
             return $this->respondWithData(StockSearch::apply($filters), $filters);
-        /*} catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             // TODO: Generate an error Log
-        }*/
+        }
 
         return new JsonResponse([
             "success" => false,
@@ -61,5 +64,66 @@ class StockController extends Controller
             }
         }
         return new JsonResponse($data, 200);
+    }
+
+    /**
+     * @param AddEditStockRequest $request
+     * @return JsonResponse
+     */
+    public function add(AddEditStockRequest $request) {
+        try {
+            $stock = Stock::create([
+                'name' => $request->input('name'),
+                'brand_id' => $request->input('brand_id'),
+                'quality_id' => $request->input('quality_id'),
+            ]);
+
+            $stock->stock_city()->create([
+                'city_id' => $request->input('city_id'),
+                'quantity' => $request->input('quantity')
+            ]);
+
+            return new JsonResponse([
+                "success" => true,
+                "msg" => "Stock Updated Successfully"
+            ], 200);
+        } catch (\Exception $exception) {
+            return new JsonResponse([
+                "success" => false,
+                "msg" => "Unable to process this request right now. Please try again later"
+            ], 500);
+        }
+    }
+
+    /**
+     * @param AddEditStockRequest $request
+     * @return JsonResponse
+     */
+    public function edit(AddEditStockRequest $request, $id) {
+        try {
+            $stock = Stock::find($id);
+
+            $stock = $stock->update([
+                'name' => $request->input('name'),
+                'brand_id' => $request->input('brand_id'),
+                'quality_id' => $request->input('quality_id'),
+            ]);
+
+            $stock->stock_city()->update([
+                'city_id' => $request->input('city_id'),
+                'quantity' => $request->input('quantity')
+            ]);
+
+            return new JsonResponse([
+                "success" => true,
+                "msg" => "Stock Updated Successfully"
+            ], 200);
+
+        } catch (\Exception $exception) {
+            return new JsonResponse([
+                "success" => false,
+                "msg" => "Unable to process this request right now. Please try again later"
+            ], 500);
+        }
     }
 }
