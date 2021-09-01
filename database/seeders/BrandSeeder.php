@@ -21,7 +21,7 @@ class BrandSeeder extends Seeder
      */
     public function run() {
         DB::table('brand')->truncate();
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             DB::table("brand")->insert([
                 "name" => $this->getRandomBrand()
             ]);

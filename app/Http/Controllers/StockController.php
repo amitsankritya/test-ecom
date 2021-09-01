@@ -41,6 +41,7 @@ class StockController extends Controller
 
     private function respondWithData($collections): JsonResponse {
         $data = [];
+
         foreach ($collections as $key => $collection) {
 
             $data[$key] = [
@@ -51,11 +52,12 @@ class StockController extends Controller
             foreach ($collection->stock as $stock) {
                 $data[$key]["quality"] = $stock->quality->name;
 
-                if (!empty($stock->product_city)) {
-                    foreach ($stock->product_city as $product_city) {
+                if (!empty($stock->stock_city)) {
+                    foreach ($stock->stock_city as $product_city) {
                         $data[$key]["cities"][] = [
                             "id" => $product_city->city->id,
-                            "name" => $product_city->city->name . ", " . $product_city->city->state
+                            "name" => $product_city->city->name . ", " . $product_city->city->state,
+                            "quantity" => $product_city->quantity
                         ];
                     }
                 } else {

@@ -25,7 +25,7 @@ class UsersSeeder extends Seeder
         for ($i = 0; $i < 5; $i++) {
             DB::table("users")->insert([
                 "name" => Str::random("10"),
-                "email" => Str::random(12) . "@example.com",
+                "email" => Str::random(5) . "99@example.com",
                 "password" => Hash::make("Test@123"),
                 "type" => $this->getRandomUserType(),
                 "created_at" => Carbon::now()
