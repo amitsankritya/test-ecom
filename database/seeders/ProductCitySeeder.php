@@ -36,10 +36,10 @@ class ProductCitySeeder extends Seeder
             $this->products[] = $product->id;
         }
 
-        DB::table('product_city')->truncate();
+        DB::table('stock_city')->truncate();
         for ($i = 0; $i < 5; $i++) {
-            DB::table("product_city")->insert([
-                "product_id" => $this->getRandomProduct(),
+            DB::table("stock_city")->insert([
+                "stock_id" => $this->getRandomProduct(),
                 "city_id" => $this->getRandomCity(),
                 "quantity" => $this->getRandomQuantity(),
                 "created_at" => Carbon::now()

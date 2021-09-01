@@ -13,9 +13,9 @@ class CreateProductCityTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_city', function (Blueprint $table) {
+        Schema::create('stock_city', function (Blueprint $table) {
             $table->id();
-            $table->integer("product_id");
+            $table->integer("stock_id");
             $table->integer("city_id");
             $table->integer("quantity");
             $table->timestamps();
@@ -29,6 +29,6 @@ class CreateProductCityTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_city');
+        Schema::dropIfExists('stock_city');
     }
 }

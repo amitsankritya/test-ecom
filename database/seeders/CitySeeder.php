@@ -8,11 +8,15 @@ use Illuminate\Support\Facades\DB;
 class CitySeeder extends Seeder
 {
     const CITIES = [
-        "Panjim"
+        "Panjim",
+        "Gurgaon",
+        "Indore"
     ];
 
     const STATES = [
-        "Goa"
+        "Goa",
+        "Haryana",
+        "Madhya Pradesh"
     ];
 
     /**
@@ -25,7 +29,7 @@ class CitySeeder extends Seeder
         for ($i = 0; $i < 5; $i++) {
             DB::table("city")->insert([
                 "name" => $this->getRandomCity(),
-                "states" => $this->getRandomState(),
+                "state" => $this->getRandomState(),
                 "pincode" => $this->getRandomPinCode()
             ]);
         }

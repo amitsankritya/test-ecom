@@ -10,7 +10,9 @@ class QualitySeeder extends Seeder
     const QUALITY = [
         "W-180",
         "W-160",
-        "W-120"
+        "W-120",
+        "W-140",
+        "W-200"
     ];
 
     /**

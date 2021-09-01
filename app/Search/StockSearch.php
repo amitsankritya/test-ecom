@@ -8,8 +8,11 @@
 
 namespace App\Search;
 
+use App\Models\Brand;
+use App\Models\City;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class StockSearch
@@ -20,34 +23,27 @@ class StockSearch
      */
     public static function apply(Request $filters) {
 
-        $stock = new Stock();
+        $data = (new Brand());
 
         if ($filters->input("brand")) {
-            $stock = $stock->where("brand", $filters->input("brand"));
+            $data = $data->where("name", "=", $filters->input("brand"));
         }
 
         if ($filters->input("quality")) {
-            $stock = $stock->where("quality", $filters->input("quality"));
-        }
-
-        if ($filters->input("quantity")) {
-            $stock = $stock->where("quantity", $filters->input("quantity"));
+            $data = $data->whereHas("Stock.Quality", function ($q) use ($filters) {
+                return $q->where("name", "=", $filters->input("quality"));
+            });
         }
 
         if ($filters->input("location")) {
-
-            $location = explode(",", $filters->input("location")); // Value to have Panjim,Goa
-
-            if (!empty($location[0])) { // Search in location [Panjim]
-                $stock = $stock->where("location", $location[0]);
-            }
-
-            if (!empty($location[1])) { // Search in state [Goa]
-                $stock = $stock->where("state", $location[1]);
+            $cityIds = City::select("id")->where("name", "=", $filters->input("location"))->get()->pluck("id")->toArray();
+            if (!empty($cityIds)) {
+                $data = $data->whereHas("Stock.Stock_City", function ($q) use ($cityIds) {
+                    return $q->whereIn("stock_city.city_id", $cityIds);
+                });
             }
         }
 
-        // TODO: pagination to be implemented
-        return $stock->get();
+        return $data->with("Stock", "Stock.Quality", "Stock.Stock_City", "Stock.Stock_City.City")->get();
     }
 }

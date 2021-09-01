@@ -10,8 +10,6 @@ class Quality extends Model
 {
     use HasFactory;
 
-    use HasFactory;
-
     protected $table = "quality";
 
     /**

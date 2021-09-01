@@ -16,6 +16,6 @@ class City extends Model
      * @return HasMany
      */
     public function product_city(): HasMany {
-        return $this->hasMany(ProductCity::class, "city_id", "id");
+        return $this->hasMany(StockCity::class, "city_id", "id");
     }
 }
